@@ -36,6 +36,13 @@ module.exports = {
 				},
 			},
 			{
+				test: /\.mp3$/i,
+				type: 'asset/resource',
+				generator: {
+					filename: 'audio/[name][ext]',
+				},
+			},
+			{
 				test: /\.(woff|woff2|eot|ttf|otf)$/,
 				type: 'asset/resource',
 				generator: {
