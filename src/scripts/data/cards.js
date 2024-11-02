@@ -1,4 +1,4 @@
-import racoonPedroGif from '../images/racoon-pedro.gif';
+import racoonPedroGif from '../../images/racoon-pedro.gif';
 
 export const initialCards = [
 	{
