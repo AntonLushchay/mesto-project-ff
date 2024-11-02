@@ -1,5 +1,6 @@
 // Easter egg: Pedro
-import { playAudio, pauseAudio } from '../is-pedro/is-pedro.js';
+import { playAudio, pauseAudio } from '../pedro/pedro.js';
+import { playAudio, pauseAudio } from '../pedro/pedro';
 
 // Работа модальных окон
 

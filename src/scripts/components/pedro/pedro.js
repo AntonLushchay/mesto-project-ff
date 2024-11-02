@@ -1,5 +1,5 @@
-// Пасхалка старт 1/3
-import audioFile from '../../../audio/pedro.mp3';
+// Пасхалка старт
+import audioFile from '../../../audio/pedro-pedro.mp3';
 
 const audio = new Audio(audioFile);
 
