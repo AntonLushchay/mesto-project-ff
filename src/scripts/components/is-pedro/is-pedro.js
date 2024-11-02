@@ -1,4 +1,4 @@
-// Easter egg: Pedro
+// Пасхалка старт 1/3
 import audioFile from '../../../audio/pedro.mp3';
 
 const audio = new Audio(audioFile);
