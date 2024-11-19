@@ -2,8 +2,6 @@ import './pages/index.css';
 import { initialCards } from './scripts/data/cards.js';
 import { createCard } from './scripts/components/create-card/create-card.js';
 import { openPopup, closePopup } from './scripts/components/modal/modal.js';
-// import { handleFormSubmit } from './scripts/components/edit-popup/edit-popup.js';
-// import { addCard } from './scripts/components/add-card-popup/add-card-popup.js';
 
 // _____________________________________________________________
 // Рендер карточек
