@@ -36,8 +36,6 @@ function handleEscClose(evt, popup, closeButton) {
 	}
 }
 
-// Решил сотавить отдельными функциями добавление и удаление обработчиков,
-// уже глаз привык к такому виду
 function setPopupListeners(popup, closeButton) {
 	const closeButtonClickHandler = () => closePopup(popup, closeButton);
 	const overlayClickHandler = (evt) => handleOverlayClick(evt, popup, closeButton);

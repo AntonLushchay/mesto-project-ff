@@ -1,7 +1,12 @@
 // Рендеринг карточек
 
-export function createCard(card, cardTemplate) {
+export function createCard(card, cardTemplate, fillingImageTypePopupHandler) {
 	const cardElement = createCardElement(cardTemplate);
+	const cardImage = cardElement.querySelector('.card__image');
+
+	cardImage.addEventListener('click', (evt) => {
+		fillingImageTypePopupHandler(evt);
+	});
 
 	cardFilling(cardElement, card);
 	addLikelistener(cardElement);
