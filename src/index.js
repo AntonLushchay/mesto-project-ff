@@ -20,6 +20,7 @@ const profileEditButton = document.querySelector('.profile__edit-button');
 const contentAddButton = document.querySelector('.profile__add-button');
 
 const popupImag = imageTypePopup.querySelector('.popup__image');
+const popupCaption = imageTypePopup.querySelector('.popup__caption');
 
 const imgLoadingSpan = document.createElement('span');
 imgLoadingSpan.textContent = 'Loading...';
@@ -67,6 +68,9 @@ newCardTypePopup.addEventListener('submit', (evt) => {
 function fillingImageTypePopupHandler(evt) {
 	popupImag.src = evt.target.src;
 	popupImag.alt = evt.target.alt;
+	popupCaption.textContent = evt.target
+		.closest('.card')
+		.querySelector('.card__title').textContent;
 
 	imgLoadingSpan.style.display = 'block';
 	evt.target.after(imgLoadingSpan);
