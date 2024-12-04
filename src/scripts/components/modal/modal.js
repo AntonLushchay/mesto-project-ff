@@ -1,5 +1,6 @@
 // Easter egg: Pedro
-import { playAudio, pauseAudio } from '../pedro/pedro';
+import { playAudio, pauseAudio } from '../pedro/pedro.js';
+import { hideErrorMessage, toggleButtonState } from '../../utils/validation/validation.js';
 
 // Работа модальных окон
 const eventHandlers = [];

@@ -45,7 +45,9 @@ function likedCard(likeButton) {
 function addDeleteCardListener(cardElement) {
 	const deleteButton = cardElement.querySelector('.card__delete-button');
 
-	deleteButton.addEventListener('click', () => deleteCard(deleteButton.closest('.card')));
+	deleteButton.addEventListener('click', () =>
+		deleteCard(deleteButton.closest('.card')),
+	);
 }
 
 function deleteCard(cardElement) {

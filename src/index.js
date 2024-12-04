@@ -2,6 +2,7 @@ import './pages/index.css';
 import { initialCards } from './scripts/data/cards.js';
 import { createCard } from './scripts/components/create-card/create-card.js';
 import { openPopup, closePopup } from './scripts/components/modal/modal.js';
+import { enableValidation, clearValidation } from './scripts/utils/validation/validation.js';
 
 // Константы рендера карточек
 const cardTemplate = document.querySelector('#card-template').content;
@@ -37,6 +38,12 @@ const profileDiscription = document.querySelector('.profile__description');
 const profileInputName = profileTypePopup.querySelector('.popup__input_type_name');
 const profileInputDiscription = profileTypePopup.querySelector('.popup__input_type_description');
 
+const newCardInputPlace = newCardTypePopup.querySelector('.popup__input_type_card-name');
+const newCardInputLink = newCardTypePopup.querySelector('.popup__input_type_url');
+
+// Валидация форм
+const validationArtefacts = enableValidation();
+
 // Реднер карточек
 initialCards.forEach((cardData) => {
 	const cardElement = createCard(cardData, cardTemplate, fillingImageTypePopupHandler);
@@ -44,18 +51,23 @@ initialCards.forEach((cardData) => {
 });
 
 // Обработчики открытия popup'ов
-profileEditButton.addEventListener('click', (evt) => {
+profileEditButton.addEventListener('click', () => {
 	profileInputName.value = profileTitle.textContent;
 	profileInputDiscription.value = profileDiscription.textContent;
 
+	clearValidation(validationArtefacts.allInputLists[0], validationArtefacts.buttonElements[0]);
 	openPopup(profileTypePopup, profileCloseButton);
 });
 
-contentAddButton.addEventListener('click', (evt) => {
+contentAddButton.addEventListener('click', () => {
+	newCardInputPlace.value = '';
+	newCardInputLink.value = '';
+
+	clearValidation(validationArtefacts.allInputLists[1], validationArtefacts.buttonElements[1]);
 	openPopup(newCardTypePopup, newCardCloseButton);
 });
 
-// Обработчики submit события в popup'ах
+// Обработчики submit событий в popup'ах
 profileTypePopup.addEventListener('submit', (evt) => {
 	handleEditFormSubmit(evt);
 });
@@ -94,7 +106,10 @@ function handleEditFormSubmit(evt) {
 
 function handleAddFormSubmit(evt) {
 	evt.preventDefault();
-	const cardData = { name: evt.target[0].value, link: evt.target[1].value };
+	const cardData = {
+		name: evt.target[0].value,
+		link: evt.target[1].value,
+	};
 	const cardElement = createCard(cardData, cardTemplate, fillingImageTypePopupHandler);
 	placesList.prepend(cardElement);
 	evt.target.reset();
