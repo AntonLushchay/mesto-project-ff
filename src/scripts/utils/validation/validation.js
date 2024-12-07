@@ -30,7 +30,7 @@ export function enableValidation() {
 }
 
 function checkInputValidity(inputElement, errorElement) {
-	if (inputElement.id !== 'link') {
+	if (inputElement.type !== 'url') {
 		if (!regExp.test(inputElement.value)) {
 			inputElement.setCustomValidity(inputElement.getAttribute(`data-error-message-${lang}`));
 		} else {

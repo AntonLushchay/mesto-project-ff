@@ -17,9 +17,8 @@ module.exports = {
 		port: 8080,
 		open: true,
 		devMiddleware: {
-			writeToDisk: true, // Используем devMiddleware для записи файлов на диск
+			writeToDisk: true,
 		},
-		// hot: true, // Отключение HMR
 	},
 	module: {
 		rules: [
@@ -29,7 +28,7 @@ module.exports = {
 				exclude: '/node_modules/',
 			},
 			{
-				test: /\.(png|svg|jpg|jpeg|gif)$/,
+				test: /\.(png|svg|jpg|jpeg|gif)$/i,
 				type: 'asset/resource',
 				generator: {
 					filename: 'images/[name][ext]',
@@ -69,5 +68,4 @@ module.exports = {
 		new CleanWebpackPlugin(),
 		new MiniCssExtractPlugin(),
 	],
-	// devtool: false, // Отключение генерации source-map
 };

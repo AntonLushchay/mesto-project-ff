@@ -1,7 +1,8 @@
 @import url('./description/card__description.css');
 @import url('./image/card__image.css');
-@import url('./like-button/card__like-button.css');
-@import url('./like-button/is-active/card__like-button_is-active.css');
+@import url('./like-container/like-button/card__like-button.css');
+@import url('./like-container/like-button/is-active/card__like-button_is-active.css');
+@import url('./like-container/like-container.css');
 @import url('./delete-button/card__delete-button.css');
 @import url('./loading/loading.css');
 @import url('./title/card__title.css');
