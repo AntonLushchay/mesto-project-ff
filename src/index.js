@@ -13,25 +13,22 @@ import {
 	isImgReq,
 } from './scripts/utils/api/api.js';
 
-// Константы рендера карточек
-const placesList = document.querySelector('.places__list');
-
 // Константы модальных окон
 const profileTypePopup = document.querySelector('.popup_type_edit');
 const newCardTypePopup = document.querySelector('.popup_type_new-card');
 const imageTypePopup = document.querySelector('.popup_type_image');
 const cardDeleteTypePopup = document.querySelector('.popup_type_delete-card');
-const avatarUpdateTypePopup = document.querySelector('.popup_type_update-avatar'); //NEW
+const avatarUpdateTypePopup = document.querySelector('.popup_type_update-avatar');
 
 const profileCloseButton = profileTypePopup.querySelector('.popup__close');
 const newCardCloseButton = newCardTypePopup.querySelector('.popup__close');
 const imageCloseButton = imageTypePopup.querySelector('.popup__close');
 const deletCardCloseButton = cardDeleteTypePopup.querySelector('.popup__close');
-const avatarUpdateCloseButton = avatarUpdateTypePopup.querySelector('.popup__close'); //NEW
+const avatarUpdateCloseButton = avatarUpdateTypePopup.querySelector('.popup__close');
 
 const profileEditButton = document.querySelector('.profile__edit-button');
 const contentAddButton = document.querySelector('.profile__add-button');
-const avatarUpdateButton = document.querySelector('.profile__image'); //NEW
+const avatarUpdateButton = document.querySelector('.profile__image');
 
 const popupImag = imageTypePopup.querySelector('.popup__image');
 const popupCaption = imageTypePopup.querySelector('.popup__caption');
@@ -44,7 +41,7 @@ profileTypePopup.classList.add('popup_is-animated');
 newCardTypePopup.classList.add('popup_is-animated');
 imageTypePopup.classList.add('popup_is-animated');
 cardDeleteTypePopup.classList.add('popup_is-animated');
-avatarUpdateTypePopup.classList.add('popup_is-animated'); //NEW
+avatarUpdateTypePopup.classList.add('popup_is-animated');
 
 // Константы профиля
 const profileTitle = document.querySelector('.profile__title');
@@ -58,7 +55,16 @@ const profileInputDiscription = profileTypePopup.querySelector('.popup__input_ty
 const newCardInputPlace = newCardTypePopup.querySelector('.popup__input_type_card-name');
 const newCardInputLink = newCardTypePopup.querySelector('.popup__input_type_url');
 
-const avatarInputLink = avatarUpdateTypePopup.querySelector('.popup__input_type_url'); //NEW
+const avatarInputLink = avatarUpdateTypePopup.querySelector('.popup__input_type_url');
+
+// Константы рендера карточек
+const placesList = document.querySelector('.places__list');
+const cardSettings = {
+	cardTemplate: document.querySelector('#card-template').content,
+	fillImageElement: fillingImageTypePopupHandler,
+	addDeleteCardlistener: addDeleteCardlistener,
+	addLikeCardListener: addLikeCardListener,
+};
 
 // Загрузка данных пользователя
 try {
@@ -75,14 +81,6 @@ try {
 const validationArtefacts = enableValidation();
 
 // Реднер карточек
-// Константы рендера карточек
-const cardSettings = {
-	cardTemplate: document.querySelector('#card-template').content,
-	fillImageElement: fillingImageTypePopupHandler,
-	addDeleteCardlistener: addDeleteCardlistener,
-	addLikeCardListener: addLikeCardListener,
-};
-
 renderCards();
 
 async function renderCards() {
@@ -97,7 +95,7 @@ async function renderCards() {
 	}
 }
 
-// Eventlisteners for buttons (profile edit, add new card, delete card, like card, update avatar)
+// Установка слушателей на кнопки
 profileEditButton.addEventListener('click', () => {
 	profileInputName.value = profileTitle.textContent;
 	profileInputDiscription.value = profileDiscription.textContent;
@@ -118,7 +116,7 @@ function addDeleteCardlistener(deleteButton, cardId) {
 	deleteButton.addEventListener('click', () => {
 		openPopup(cardDeleteTypePopup, deletCardCloseButton);
 
-		// обработчик submit события в popup'е удаления карточки
+		//Обработчик submit событий в popup
 		cardDeleteTypePopup.addEventListener('submit', (evt) => handleDeleteCard(evt, deleteButton, cardId));
 	});
 }
@@ -139,7 +137,7 @@ profileTypePopup.addEventListener('submit', (evt) => handleEditFormSubmit(evt));
 
 newCardTypePopup.addEventListener('submit', (evt) => handleAddFormSubmit(evt));
 
-avatarUpdateTypePopup.addEventListener('submit', (evt) => handleAvatarUpdate(evt)); //NEW
+avatarUpdateTypePopup.addEventListener('submit', (evt) => handleAvatarUpdate(evt));
 
 // Заполнение попапа с изображением
 function fillingImageTypePopupHandler(evt) {
@@ -247,11 +245,9 @@ async function handleAvatarUpdate(evt) {
 	const avatarUrl = avatarInputLink.value;
 
 	try {
-		const chtoTakoe = await isImgReq(avatarUrl);
-		console.log('chtoTakoe', chtoTakoe);
+		await isImgReq(avatarUrl);
 		try {
 			const result = await avatarUpdateReq(avatarUrl);
-			console.log('result', result);
 
 			profileAvatar.style.backgroundImage = `url(${result.avatar})`;
 			closePopup(avatarUpdateTypePopup, avatarUpdateCloseButton);
