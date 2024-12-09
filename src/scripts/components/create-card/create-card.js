@@ -1,20 +1,20 @@
 // Рендеринг карточек
 
-export function createCard(cardData, cardSettings) {
+export function createCard(cardData, cardSettings, userId) {
 	const cardElement = createCardElement(cardSettings.cardTemplate);
 	const currentCardComponents = {
 		cardTitle: cardElement.querySelector('.card__title'),
 		cardImage: cardElement.querySelector('.card__image'),
 		cardLikeButton: cardElement.querySelector('.card__like-button'),
+		cardLikeCount: cardElement.querySelector('.card__like-counter'),
 		deleteButton: cardElement.querySelector('.card__delete-button'),
 	};
-	cardFilling(currentCardComponents, cardData);
 
-	currentCardComponents.cardImage.addEventListener('click', (evt) =>
-		cardSettings.fillImageElement(evt),
-	);
+	cardFilling(currentCardComponents, cardData, userId);
 
-	if (cardData.owner._id !== '73e6973ea1f4959c04ced3be') {
+	currentCardComponents.cardImage.addEventListener('click', (evt) => cardSettings.fillImageElement(evt));
+
+	if (cardData.owner._id !== userId) {
 		currentCardComponents.deleteButton.remove();
 	} else {
 		cardSettings.addDeleteCardlistener(currentCardComponents.deleteButton, cardData._id);
@@ -31,43 +31,26 @@ function createCardElement(cardTemplate) {
 	return cardElement;
 }
 
-function cardFilling(currentCardComponents, cardData) {
+function cardFilling(currentCardComponents, cardData, userId) {
 	currentCardComponents.cardImage.src = cardData.link;
 	currentCardComponents.cardImage.alt = cardData.name;
 	currentCardComponents.cardTitle.textContent = cardData.name;
 
-	showCardLikes(currentCardComponents.cardLikeButton, cardData);
+	showCardLikes(currentCardComponents.cardLikeButton, cardData, userId);
 }
 
-export function showCardLikes(likeButton, cardData) {
+export function showCardLikes(likeButton, cardData, userId) {
 	if (Array.isArray(cardData.likes) && cardData.likes.length > 0) {
-		// Если лйки пришли и они уже есть на карточке
-		if (likeButton.nextElementSibling) {
-			likeButton.nextElementSibling.textContent = cardData.likes.length;
-			isUserLikedCard(likeButton, cardData.likes);
-
-			// Если лайки пришли и их нет на карточке
-		} else {
-			const likeCountElement = document.createElement('span');
-
-			likeCountElement.classList.add('card__like-count');
-			likeCountElement.textContent = cardData.likes.length;
-			likeButton.after(likeCountElement);
-			isUserLikedCard(likeButton, cardData.likes);
-		}
+		likeButton.nextElementSibling.textContent = cardData.likes.length;
+		isUserLikedCard(likeButton, cardData.likes, userId);
 	} else {
-		// Если лайки не пришли, но они есть на карточке
-		if (likeButton.nextElementSibling) {
-			likeButton.nextElementSibling.remove();
-			isUserLikedCard(likeButton, cardData.likes);
-		} else {
-			// Если лайки не пришли и их нет на карточке... такго быть не должно
-		}
+		likeButton.nextElementSibling.textContent = 0;
+		isUserLikedCard(likeButton, cardData.likes, userId);
 	}
 }
 
-function isUserLikedCard(likeButton, userId) {
-	if (userId.some((user) => user._id === '73e6973ea1f4959c04ced3be')) {
+function isUserLikedCard(likeButton, likes, userId) {
+	if (likes.some((like) => like._id === userId)) {
 		likeButton.classList.add('card__like-button_is-active');
 	} else {
 		likeButton.classList.remove('card__like-button_is-active');

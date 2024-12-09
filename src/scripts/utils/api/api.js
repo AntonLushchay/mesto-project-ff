@@ -40,7 +40,7 @@ export async function getCardsReq() {
 	}
 }
 
-export async function UserUpdatingReq(profileData) {
+export async function userUpdatingReq(profileData) {
 	try {
 		const response = await fetch('https://nomoreparties.co/v1/wff-cohort-15/users/me', {
 			method: 'PATCH',

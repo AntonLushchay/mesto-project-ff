@@ -5,7 +5,7 @@ import { enableValidation, clearValidation } from './scripts/utils/validation/va
 import {
 	getUserReq,
 	getCardsReq,
-	UserUpdatingReq,
+	userUpdatingReq,
 	addNewCardReq,
 	cardDeleteReq,
 	likeCardReq,
@@ -19,12 +19,6 @@ const newCardTypePopup = document.querySelector('.popup_type_new-card');
 const imageTypePopup = document.querySelector('.popup_type_image');
 const cardDeleteTypePopup = document.querySelector('.popup_type_delete-card');
 const avatarUpdateTypePopup = document.querySelector('.popup_type_update-avatar');
-
-const profileCloseButton = profileTypePopup.querySelector('.popup__close');
-const newCardCloseButton = newCardTypePopup.querySelector('.popup__close');
-const imageCloseButton = imageTypePopup.querySelector('.popup__close');
-const deletCardCloseButton = cardDeleteTypePopup.querySelector('.popup__close');
-const avatarUpdateCloseButton = avatarUpdateTypePopup.querySelector('.popup__close');
 
 const profileEditButton = document.querySelector('.profile__edit-button');
 const contentAddButton = document.querySelector('.profile__add-button');
@@ -44,6 +38,8 @@ cardDeleteTypePopup.classList.add('popup_is-animated');
 avatarUpdateTypePopup.classList.add('popup_is-animated');
 
 // Константы профиля
+let userId; //NEW
+
 const profileTitle = document.querySelector('.profile__title');
 const profileDiscription = document.querySelector('.profile__description');
 
@@ -70,6 +66,7 @@ const cardSettings = {
 try {
 	const profileData = await getUserReq();
 
+	userId = profileData._id; //NEW
 	profileTitle.textContent = profileData.name;
 	profileDiscription.textContent = profileData.about;
 	profileAvatar.style.backgroundImage = `url(${profileData.avatar})`;
@@ -87,7 +84,7 @@ async function renderCards() {
 	try {
 		const cardsData = await getCardsReq();
 		cardsData.forEach((cardData) => {
-			const cardElement = createCard(cardData, cardSettings);
+			const cardElement = createCard(cardData, cardSettings, userId); //NEW
 			placesList.append(cardElement);
 		});
 	} catch (error) {
@@ -101,7 +98,7 @@ profileEditButton.addEventListener('click', () => {
 	profileInputDiscription.value = profileDiscription.textContent;
 
 	clearValidation(validationArtefacts.allInputLists[0], validationArtefacts.buttonElements[0]);
-	openPopup(profileTypePopup, profileCloseButton);
+	openPopup(profileTypePopup);
 });
 
 contentAddButton.addEventListener('click', () => {
@@ -109,12 +106,12 @@ contentAddButton.addEventListener('click', () => {
 	newCardInputLink.value = '';
 
 	clearValidation(validationArtefacts.allInputLists[1], validationArtefacts.buttonElements[1]);
-	openPopup(newCardTypePopup, newCardCloseButton);
+	openPopup(newCardTypePopup);
 });
 
 function addDeleteCardlistener(deleteButton, cardId) {
 	deleteButton.addEventListener('click', () => {
-		openPopup(cardDeleteTypePopup, deletCardCloseButton);
+		openPopup(cardDeleteTypePopup);
 
 		//Обработчик submit событий в popup
 		cardDeleteTypePopup.addEventListener('submit', (evt) => handleDeleteCard(evt, deleteButton, cardId));
@@ -129,7 +126,7 @@ avatarUpdateButton.addEventListener('click', () => {
 	avatarInputLink.value = '';
 
 	clearValidation(validationArtefacts.allInputLists[2], validationArtefacts.buttonElements[2]);
-	openPopup(avatarUpdateTypePopup, avatarUpdateCloseButton);
+	openPopup(avatarUpdateTypePopup);
 });
 
 // Обработчики submit событий в popup'ах
@@ -152,7 +149,7 @@ function fillingImageTypePopupHandler(evt) {
 		'load',
 		() => {
 			imgLoadingSpan.style.display = 'none';
-			openPopup(imageTypePopup, imageCloseButton);
+			openPopup(imageTypePopup);
 		},
 		{ once: true },
 	);
@@ -171,11 +168,11 @@ async function handleEditFormSubmit(evt) {
 	};
 
 	try {
-		const result = await UserUpdatingReq(updatedProfileData);
+		const result = await userUpdatingReq(updatedProfileData);
 		console.log('result UserUpdat', result);
 		profileTitle.textContent = result.name;
 		profileDiscription.textContent = result.about;
-		closePopup(profileTypePopup, profileCloseButton);
+		closePopup(profileTypePopup);
 	} catch (error) {
 		console.log('Ошибка при обновлении данных пользователя:', error);
 	} finally {
@@ -200,7 +197,7 @@ async function handleAddFormSubmit(evt) {
 
 		placesList.prepend(cardElement);
 		evt.target.reset();
-		closePopup(newCardTypePopup, newCardCloseButton);
+		closePopup(newCardTypePopup);
 	} catch (error) {
 		console.log('Ошибка при добавлении новой карточки:', error);
 	} finally {
@@ -217,7 +214,7 @@ async function handleDeleteCard(evt, deleteButton, cardId) {
 	try {
 		await cardDeleteReq(cardId);
 		deleteButton.closest('.card').remove();
-		closePopup(cardDeleteTypePopup, deletCardCloseButton);
+		closePopup(cardDeleteTypePopup);
 	} catch (error) {
 		console.log('Ошибка при удалении карточки:', error);
 	} finally {
@@ -230,7 +227,7 @@ async function handleLikeCard(likeButton, cardId) {
 
 	try {
 		const updatedCard = await likeCardReq(cardId, metod);
-		showCardLikes(likeButton, updatedCard);
+		showCardLikes(likeButton, updatedCard, userId);
 	} catch (error) {
 		console.log('Ошибка при обновлении данных карточки:', error);
 	}
@@ -250,7 +247,7 @@ async function handleAvatarUpdate(evt) {
 			const result = await avatarUpdateReq(avatarUrl);
 
 			profileAvatar.style.backgroundImage = `url(${result.avatar})`;
-			closePopup(avatarUpdateTypePopup, avatarUpdateCloseButton);
+			closePopup(avatarUpdateTypePopup);
 		} catch (error) {
 			console.log('Ошибка при обновлении аватара:', error);
 		}
