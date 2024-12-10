@@ -1,126 +1,29 @@
-export async function getUserReq() {
+import { checkResponse } from '../utils.js';
+
+const config = {
+	baseUrl: 'https://nomoreparties.co/v1/wff-cohort-15',
+	headers: {
+		authorization: '6ecdd90f-2ff6-4f8a-9fae-be11c25c4731',
+		'Content-Type': 'application/json',
+	},
+};
+
+export async function request(endPoint, metod, data) {
 	try {
-		const response = await fetch('https://nomoreparties.co/v1/wff-cohort-15/users/me', {
-			method: 'GET',
-			headers: {
-				authorization: '6ecdd90f-2ff6-4f8a-9fae-be11c25c4731',
-			},
-		});
-
-		if (!response.ok) {
-			throw new Error(`Ошибка: ${response.status}`);
-		}
-
-		const result = await response.json();
-		return result;
-	} catch (err) {
-		console.log('Ошибка функции getUserReq: ' + err);
-		throw err;
-	}
-}
-
-export async function getCardsReq() {
-	try {
-		const response = await fetch('https://nomoreparties.co/v1/wff-cohort-15/cards', {
-			method: 'GET',
-			headers: {
-				authorization: '6ecdd90f-2ff6-4f8a-9fae-be11c25c4731',
-			},
-		});
-
-		if (!response.ok) {
-			throw new Error(`Ошибка: ${response.status}`);
-		}
-
-		const result = await response.json();
-		return result;
-	} catch (err) {
-		console.log('Ошибка функции getCardsReq: ' + err);
-		throw err;
-	}
-}
-
-export async function userUpdatingReq(profileData) {
-	try {
-		const response = await fetch('https://nomoreparties.co/v1/wff-cohort-15/users/me', {
-			method: 'PATCH',
-			headers: {
-				authorization: '6ecdd90f-2ff6-4f8a-9fae-be11c25c4731',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(profileData),
-		});
-
-		if (!response.ok) {
-			throw new Error(`Ошибка: ${response.status}`);
-		}
-
-		const result = await response.json();
-		return result;
-	} catch (err) {
-		console.log('Ошибка функции UserUpdatingReq: ' + err);
-		throw err;
-	}
-}
-
-export async function addNewCardReq(cardData) {
-	try {
-		const response = await fetch('https://nomoreparties.co/v1/wff-cohort-15/cards', {
-			method: 'POST',
-			headers: {
-				authorization: '6ecdd90f-2ff6-4f8a-9fae-be11c25c4731',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(cardData),
-		});
-
-		if (!response.ok) {
-			throw new Error(`Ошибка: ${response.status}`);
-		}
-
-		const result = await response.json();
-		return result;
-	} catch (err) {
-		console.log('Ошибка функции addNewCardReq: ' + err);
-		throw err;
-	}
-}
-
-export async function cardDeleteReq(cardId) {
-	try {
-		const response = await fetch(`https://nomoreparties.co/v1/wff-cohort-15/cards/${cardId}`, {
-			method: 'DELETE',
-			headers: {
-				authorization: '6ecdd90f-2ff6-4f8a-9fae-be11c25c4731',
-			},
-		});
-
-		if (!response.ok) {
-			throw new Error(`Ошибка: ${response.status}`);
-		}
-	} catch (err) {
-		console.log('Ошибка функции cardDeleteReq: ' + err);
-		throw err;
-	}
-}
-
-export async function likeCardReq(cardId, metod) {
-	try {
-		const response = await fetch(`https://nomoreparties.co/v1/wff-cohort-15/cards/likes/${cardId}`, {
+		const options = {
 			method: `${metod}`,
-			headers: {
-				authorization: '6ecdd90f-2ff6-4f8a-9fae-be11c25c4731',
-			},
-		});
+			headers: config.headers,
+		};
 
-		if (!response.ok) {
-			throw new Error(`Ошибка: ${response.status}`);
+		if (data) {
+			options.body = JSON.stringify(data);
 		}
 
-		const result = await response.json();
-		return result;
+		const response = await fetch(`${config.baseUrl}${endPoint}`, options);
+
+		return await checkResponse(response);
 	} catch (err) {
-		console.log('Ошибка функции likeCardReq: ' + err);
+		console.log('Ошибка запроса к серверу: ' + err);
 		throw err;
 	}
 }
@@ -132,7 +35,7 @@ export async function isImgReq(url) {
 		});
 
 		if (!response.ok) {
-			throw new Error(`Ошибка: ${response.status}`);
+			return Promise.reject(`Ошибка: ${res.status}`);
 		}
 
 		const contentType = response.headers.get('Content-Type');
@@ -142,29 +45,6 @@ export async function isImgReq(url) {
 		}
 	} catch (err) {
 		console.log('Ошибка функции isImgReq: ' + err);
-		return false;
-	}
-}
-
-export async function avatarUpdateReq(avatarUrl) {
-	try {
-		const response = await fetch('https://nomoreparties.co/v1/wff-cohort-15/users/me/avatar', {
-			method: 'PATCH',
-			headers: {
-				authorization: '6ecdd90f-2ff6-4f8a-9fae-be11c25c4731',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ avatar: avatarUrl }),
-		});
-
-		if (!response.ok) {
-			throw new Error(`Ошибка: ${response.status}`);
-		}
-
-		const result = await response.json();
-		return result;
-	} catch (err) {
-		console.log('Ошибка функции avatarUpdateReq: ' + err);
 		throw err;
 	}
 }

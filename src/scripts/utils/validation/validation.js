@@ -4,32 +4,34 @@ const userLang = navigator.language || navigator.userLanguage;
 const lang = userLang.startsWith('ru') ? 'ru' : 'en';
 const regExp = /^[\p{L}\s-]*$/u;
 
-export function enableValidation() {
-	const formList = Array.from(document.querySelectorAll('.popup__form'));
-	const allInputLists = [];
-	const buttonElements = [];
+export function enableValidation(settings) {
+	const formList = Array.from(document.querySelectorAll(settings.form));
+
+	const allInputs = [];
 
 	formList.forEach((formElement) => {
-		const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-		const buttonElement = formElement.querySelector('.popup__button');
+		const inputList = Array.from(formElement.querySelectorAll(settings.input));
+		const buttonElement = formElement.querySelector(settings.submitButtonSelector);
+
+		toggleButtonState(inputList, buttonElement);
 
 		inputList.forEach((inputElement) => {
 			const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
 
+			allInputs.push(inputElement);
+			console.log('vs nen1', settings);
 			inputElement.addEventListener('input', () => {
-				checkInputValidity(inputElement, errorElement);
+				console.log('vs nen2', settings);
+				checkInputValidity(inputElement, errorElement, settings);
 				toggleButtonState(inputList, buttonElement);
 			});
 		});
-
-		allInputLists.push(inputList);
-		buttonElements.push(buttonElement);
 	});
 
-	return { allInputLists, buttonElements };
+	return allInputs;
 }
 
-function checkInputValidity(inputElement, errorElement) {
+function checkInputValidity(inputElement, errorElement, settings) {
 	if (inputElement.type !== 'url') {
 		if (!regExp.test(inputElement.value)) {
 			inputElement.setCustomValidity(inputElement.getAttribute(`data-error-message-${lang}`));
@@ -39,9 +41,9 @@ function checkInputValidity(inputElement, errorElement) {
 	}
 
 	if (inputElement.validity.valid) {
-		hideErrorMessage(inputElement, errorElement);
+		hideErrorMessage(inputElement, errorElement, settings);
 	} else {
-		showErrorMessage(inputElement, errorElement);
+		showErrorMessage(inputElement, errorElement, settings);
 	}
 }
 
@@ -54,22 +56,26 @@ function toggleButtonState(inputList, buttonElement) {
 	}
 }
 
-function hideErrorMessage(inputElement, errorElement) {
+function hideErrorMessage(inputElement, errorElement, settings) {
 	errorElement.textContent = '';
-	errorElement.classList.remove('popup__input-error_active');
-	inputElement.style.borderBottom = '1px solid rgba(0, 0, 0, .2)';
+	errorElement.classList.remove(settings.erorrSpanActive);
+	inputElement.classList.remove(settings.inputInvalid);
 }
 
-function showErrorMessage(inputElement, errorElement) {
+function showErrorMessage(inputElement, errorElement, settings) {
 	errorElement.textContent = inputElement.validationMessage;
-	errorElement.classList.add('popup__input-error_active');
-	inputElement.style.borderBottom = '1px solid rgba(255, 0, 0, 1)';
+
+	console.log('vs nen2');
+	errorElement.classList.add(settings.erorrSpanActive);
+	inputElement.classList.add(settings.inputInvalid);
 }
 
-export function clearValidation(inputList, buttonElement) {
+export function clearValidation(inputList, settings) {
 	inputList.forEach((inputElement) => {
-		hideErrorMessage(inputElement, inputElement.nextElementSibling);
+		hideErrorMessage(inputElement, inputElement.nextElementSibling, settings);
 		inputElement.setCustomValidity('');
 	});
+
+	const buttonElement = inputList[0].form.querySelector(settings.submitButtonSelector);
 	toggleButtonState(inputList, buttonElement);
 }
