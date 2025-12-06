@@ -3,6 +3,7 @@
 ![Project Status](https://img.shields.io/badge/Status-Completed-success)
 ![Project Type](https://img.shields.io/badge/Type-Educational-orange)
 ![CI/CD](https://img.shields.io/badge/deploy-GitHub%20Pages-blue)
+![Webpack](https://img.shields.io/badge/Build%20Tool-Webpack-brightgreen)
 
 Интерактивный сервис, где пользователи могут делиться фотографиями интересных мест, оценивать лайками снимки других пользователей и управлять своим профилем. Проект позволяет создать свою собственную галерею впечатлений.
 
