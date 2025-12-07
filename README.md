@@ -1,9 +1,18 @@
-# Mesto-project-ff
+# Место
 
-![Project Status](https://img.shields.io/badge/Status-Completed-success)
-![Project Type](https://img.shields.io/badge/Type-Educational-orange)
-![CI/CD](https://img.shields.io/badge/deploy-GitHub%20Pages-blue)
-![Webpack](https://img.shields.io/badge/Build%20Tool-Webpack-brightgreen)
+![Status](https://img.shields.io/badge/status-Completed-darkgreen)
+![Type](https://img.shields.io/badge/type-Educational-orange)
+![Deploy](https://img.shields.io/badge/deploy-GitHub%20Pages-blue)
+![Audience](https://img.shields.io/badge/audience-Portfolio-purple)
+
+![HTML](https://img.shields.io/badge/HTML-5-red?logo=html5)
+![CSS](https://img.shields.io/badge/CSS-3-blue?logo=css3)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-BA8E23?logo=javascript)
+![BEM](https://img.shields.io/badge/BEM-444444)
+![Webpack](https://img.shields.io/badge/Webpack-444444?logo=webpack)
+![Babel](https://img.shields.io/badge/Babel-444444?logo=babel)
+![PostCSS](https://img.shields.io/badge/PostCSS-444444?logo=postcss)
+![NPM](https://img.shields.io/badge/NPM-444444?logo=npm)
 
 Интерактивный сервис, где пользователи могут делиться фотографиями интересных мест, оценивать лайками снимки других пользователей и управлять своим профилем. Проект позволяет создать свою собственную галерею впечатлений.
 
